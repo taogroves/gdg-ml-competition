@@ -14,15 +14,16 @@ from model import create_model
 # TODO modify this function however you want to train the model
 def train_model(model, optimizer, criterion, X_train, y_train, X_val, y_val, training_updates=True):
 
-    num_epochs = 2000 # hint: you shouldn't need anywhere near this many epochs
+    num_epochs = 500
 
     for epoch in range(num_epochs):
         optimizer.zero_grad()
+        # Get model predictions and calculate loss
         output = model(X_train)
         loss = criterion(output, y_train)
-        loss.backward()
+        loss.backward()# Backpropagate the loss and update model weights
         optimizer.step()
-        if training_updates and epoch % (num_epochs // 10) == 0: # print training and validation loss 10 times across training
+        if training_updates and epoch % (num_epochs // 10) == 0:  # Print progress every 10% of the way through training
             with torch.no_grad():
                 output = model(X_val)
                 val_loss = criterion(output, y_val)
