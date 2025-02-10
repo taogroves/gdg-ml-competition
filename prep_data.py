@@ -137,13 +137,13 @@ def get_raw_data(path="data"):
         else:
             data = data.merge(df, on="Title", how="outer")  # Outer join keeps all data
 
-    # ✅ Fix duplicate columns (e.g., "Genre_x" and "Genre_y")
+    # Fix duplicate columns (e.g., "Genre_x" and "Genre_y")
     for col in STANDARD_COLUMNS.values():
         if f"{col}_x" in data.columns and f"{col}_y" in data.columns:
             data[col] = data[f"{col}_x"].combine_first(data[f"{col}_y"])  # Use non-null values
             data.drop([f"{col}_x", f"{col}_y"], axis=1, inplace=True)  # Drop duplicates
 
-    # ✅ Ensure 'Genre' exists in the final dataset
+    # Ensure 'Genre' exists in the final dataset
     if 'Genre' not in data.columns:
         data['Genre'] = None  # Avoid KeyError if missing
 
