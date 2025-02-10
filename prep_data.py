@@ -14,6 +14,8 @@ import re
 
 # columns used in template: 'Released_Year', 'Certificate', 'Runtime', 'Genre' (kind of',
 # 'IMDB_Rating', 'Meta_score', 'Votes'
+
+# Dictionary to standardize column names across different datasets
 STANDARD_COLUMNS = {
     "Series_Title": "Title",
     "Released_Year": "Year",
@@ -34,19 +36,20 @@ def get_prepared_data(data_path="data"):
     # if not, you will need additional logic to join the datasets
     # do not rename the column by hand, add code before this point to rename it
     # remember: we will not manually modify your datasets, so your code must do any formatting automatically
+    
+    # Load and combine all our CSV files
     data = get_raw_data(data_path)
     
     # First, check what columns we actually have
     print("Available columns:", data.columns.tolist())
 
     
-
      # Extract Gross from info column
     data['Gross'] = data['Info'].str.extract(r'(?:Gross:|Box Office:)\s*\$?([\d,]+)').iloc[:, 0]
     
 
-   # Inside get_prepared_data function
-    columns_to_drop = ["Unnamed: 0", "Title", "Certificate", "Description", "Cast"]
+    # Drop columns we don't need
+    columns_to_drop = ["Unnamed: 0", "Title", "Certificate", "Description", "Cast", "Poster_Link", "Director", "Star1", "Star2", "Star3", "Star4", "Overview"]
     data = data.drop(columns=[col for col in columns_to_drop if col in data.columns])
 
 

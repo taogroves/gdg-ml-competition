@@ -12,33 +12,23 @@ from model import create_model
 
 
 # TODO modify this function however you want to train the model
-def train_model(model, optimizer, criterion, X_train, y_train, X_val, y_val, patience=10, training_updates=True):
-    num_epochs = 2000
-    best_loss = float('inf')
-    patience_counter = 0
+def train_model(model, optimizer, criterion, X_train, y_train, X_val, y_val, training_updates=True):
+
+    num_epochs = 500
 
     for epoch in range(num_epochs):
         optimizer.zero_grad()
+        # Get model predictions and calculate loss
         output = model(X_train)
         loss = criterion(output, y_train)
-        loss.backward()
+        loss.backward()# Backpropagate the loss and update model weights
         optimizer.step()
-
-        if training_updates and epoch % (num_epochs // 10) == 0:
+        if training_updates and epoch % (num_epochs // 10) == 0:  # Print progress every 10% of the way through training
             with torch.no_grad():
-                val_output = model(X_val)
-                val_loss = criterion(val_output, y_val)
+                output = model(X_val)
+                val_loss = criterion(output, y_val)
                 print(f"Epoch {epoch} | Training Loss: {loss.item()}, Validation Loss: {val_loss.item()}")
 
-                # Early stopping logic
-                if val_loss < best_loss:
-                    best_loss = val_loss
-                    patience_counter = 0
-                else:
-                    patience_counter += 1
-                    if patience_counter >= patience:
-                        print("Early stopping triggered.")
-                        break
     return model
 
 
@@ -66,8 +56,7 @@ if __name__ == '__main__':
         loss = criterion(output, y_val)
         print(f"Final Validation Loss: {loss.item()}")
         # validation accuracy
-        rmse = torch.sqrt(loss).item()
-        print(f"Final Validation RMSE: {rmse}")
+        print(f"Final Validation Accuracy: {1 - loss.item() / y_val.var()}")
 
     # Save model
     torch.save(model, "saved_weights/model.pth")
