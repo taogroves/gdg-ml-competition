@@ -4,6 +4,14 @@
 This repository contains starter code to use when crafting your solution.
 You should clone it on your machine and work from there.
 
+## Data CSV files used: 
+https://www.kaggle.com/datasets/omarhanyy/imdb-top-1000
+https://www.kaggle.com/datasets/harshitshankhdhar/imdb-dataset-of-top-1000-movies-and-tv-shows
+
+## Sources : 
+https://www.kaggle.com/code/adityapatil484/tmdb-box-office-prediction-notebook
+https://arxiv.org/html/2405.11651v1#S2
+
 ## How To Use
 ### The repository contains five main files:
 - `model.py` is where you define your model
